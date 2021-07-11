@@ -5,28 +5,23 @@ This is module supports all the REST actions for querying movie data/details.
 
 from flask import make_response, abort
 from app_config import db
-from models import User, UserSchema
+from models import User
 
 
-def read_all():
-    """
-    This function responds to endpoint '/api/users'
-    with the detailed list of users
+# Python Objects To JSON
+def serialize_list(users_obj_list):
+    users_list = []
+    for user_obj in users_obj_list:
+        user_dict = {}
+        user_dict["firstName"] = user_obj.full_name
+        user_dict["userName"] = user_obj.login_name
+        user_dict["emailId"] = user_obj.email
+        user_dict["accessLevel"] = user_obj.access_role
+        users_list.append(user_dict)
+    return users_list
 
-    :return:        json string of list of users
-    """
 
-    users = User.query.with_entities(
-        User.id,
-        User.full_name,
-        User.login_name,
-        User.email,
-        User.access_role
-    ).order_by(User.id).all()
-
-    # Serialize the data for the response
-    user_schema = UserSchema(many=True)
-    data = user_schema.dump(users)
-    for d in data:
-        print(d)
-    return data
+def get_all(_limit=None):
+    users_obj_list = db.session.query(
+        User).order_by(User.id).limit(_limit).all()
+    return serialize_list(users_obj_list)

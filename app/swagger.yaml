@@ -14,57 +14,61 @@ produces:
   - application/json
 
 definitions:
-  MovieList:
-    type: array
-    items:
-      type: object
-      properties:
-        99popularity:
-          type: number
-          example: 78.0
-        director:
-          type: string
-          example: Bret Ratner
-        genre:
-          type: array
-          items:
-            type: string
-            example: ["Action", "Comedy"]
-        imdbScore:
-          type: number
-          example: 7.0
-        name:
-          type: string
-          example: Rush Hour
-  UserList:
-    type: array
-    items:
-      type: object
-      properties:
-        userId:
-          type: integer
-          example: 001
-        fullName:
-          type: string
-          example: Jackie
-        loginName:
-          type: string
-          example: chanjackie
-        email:
-          type: string
-          example: chanjackie@fynd.com
-        accessRole:
-          type: string
-          example: User
+  Movie:
+    properties:
+      99popularity:
+        type: number
+        example: 78.0
+      director:
+        type: string
+        example: Bret Ratner
+      genre:
+        type: array
+        items:
+          example: "Comedy"
+      imdbScore:
+        type: number
+        example: 7.0
+      name:
+        type: string
+        example: Rush Hour
+    required:
+      - 99popularity
+      - director
+      - imdbScore
+      - name
+
+  User:
+    properties:
+      userId:
+        type: integer
+        example: 001
+      firstName:
+        type: string
+        example: Jackie
+      userName:
+        type: string
+        example: chanjackie
+      email:
+        type: string
+        example: chanjackie@fynd.com
+      accessRole:
+        type: string
+        example: User
+    required:
+      - fullName
+      - loginName
+      - email
+      - accessRole
 
 paths:
   /movies:
     get:
-      operationId: resources.movie_resource.read_all
+      operationId: resources.movie_resource.get_all
       tags:
-        - All Movies
+        - View Movies
       summary: Detailed list of all Movies
-      description: Optional parameters also available but not shown
+      description: View all the movies
       produces:
         - application/json
       responses:
@@ -75,14 +79,14 @@ paths:
         504:
           description: Gateway Timeout.
           schema:
-            $ref: "#/definitions/MovieList"
+            $ref: "#/definitions/Movie"
   /users:
     get:
-      operationId: resources.user_resource.read_all
+      operationId: resources.user_resource.get_all
       tags:
-        - All Users
+        - View Users
       summary: Detailed list of all Users
-      description: Optional parameters also available but not shown
+      description: View all the users
       produces:
         - application/json
       responses:
@@ -93,4 +97,22 @@ paths:
         504:
           description: Gateway Timeout.
           schema:
-            $ref: "#/definitions/UserList"
+            $ref: "#/definitions/User"
+  /movie:
+    post:
+      operationId: resources.movie_resource.add_movie
+      tags:
+        - Add Movie
+      summary: Add A Movie
+      description: Adding movie details
+      parameters:
+        - name: movie_json
+          in: body
+          required: True
+          schema:
+            $ref: "#/definitions/Movie"
+      responses:
+        201:
+          description: CREATED
+          schema:
+            $ref: "#/definitions/Movie"

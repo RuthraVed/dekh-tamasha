@@ -57,22 +57,7 @@ class Genre(db.Model):
         return f"[{self.id},\t{self.genre_type}]"
 
 
-# ------------------For serializing the above Model objects-----------------------------------------
-
-class UserSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = User
-        include_relationships = True
-        load_instance = True
-
-
-class MovieSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Movie
-        include_relationships = True
-        load_instance = True
-
-
+# These serializer classes not very useful when we need customised dict/JSON keys for values
 class GenreSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Genre

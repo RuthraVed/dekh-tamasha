@@ -68,14 +68,4 @@ for movie in MOVIES:
 
 db.session.commit()
 print("SUCCESS: Movies table created.")
-
-# To Query object with specific columns-------------
-# user_obj = User.query.with_entities(
-#     User.id.label('userId'),
-#     User.full_name.label("firstName"),
-#     User.login_name.label("loginName"),
-#     User.email,
-#     User.access_role.label("accessRole")
-# ).order_by(User.id).first()
-
-# print(user_obj.firstName)
+# -----------------------------------------------------------------------
