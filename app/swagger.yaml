@@ -1,0 +1,96 @@
+swagger: "2.0"
+info:
+  title: Dekh Tamasha - A Movie Rating API
+  description: Watch movies that are worth your time
+  version: 0.0.1
+host: 192.168.227.243:5000
+basePath: /api
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+definitions:
+  MovieList:
+    type: array
+    items:
+      type: object
+      properties:
+        99popularity:
+          type: number
+          example: 78.0
+        director:
+          type: string
+          example: Bret Ratner
+        genre:
+          type: array
+          items:
+            type: string
+            example: ["Action", "Comedy"]
+        imdbScore:
+          type: number
+          example: 7.0
+        name:
+          type: string
+          example: Rush Hour
+  UserList:
+    type: array
+    items:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 001
+        fullName:
+          type: string
+          example: Jackie
+        loginName:
+          type: string
+          example: chanjackie
+        email:
+          type: string
+          example: chanjackie@fynd.com
+        accessRole:
+          type: string
+          example: User
+
+paths:
+  /movies:
+    get:
+      operationId: resources.movie_resource.read_all
+      tags:
+        - All Movies
+      summary: Detailed list of all Movies
+      description: Optional parameters also available but not shown
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+        500:
+          description: Internal Server Error.
+        504:
+          description: Gateway Timeout.
+          schema:
+            $ref: "#/definitions/MovieList"
+  /users:
+    get:
+      operationId: resources.user_resource.read_all
+      tags:
+        - All Users
+      summary: Detailed list of all Users
+      description: Optional parameters also available but not shown
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+        500:
+          description: Internal Server Error.
+        504:
+          description: Gateway Timeout.
+          schema:
+            $ref: "#/definitions/UserList"
