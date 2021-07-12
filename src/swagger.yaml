@@ -274,3 +274,47 @@ paths:
           description: BAD REQUEST
           schema:
             $ref: "#/definitions/Message"
+
+  /movie/get-top-movies-by-popularity:
+    get:
+      operationId: resources.movie_resource.get_top_movies_by_popularity
+      tags:
+        - Get Top Movies By Popularity
+      summary: Get Top 3 Movies By Popularity
+      description: Getting top 3 movies by popularity
+      parameters:
+        - in: query
+          name: _limit
+          type: integer
+          description: To number limit search records
+      responses:
+        200:
+          description: CREATED
+          schema:
+            $ref: "#/definitions/Movie"
+        400:
+          description: BAD REQUEST
+          schema:
+            $ref: "#/definitions/Message"
+
+  /movie/get-top-movies-by-imdb:
+    get:
+      operationId: resources.movie_resource.get_top_movies_by_imdb
+      tags:
+        - Get Top Movies By IMDB
+      summary: Get Top 3 Movies By IMDB
+      description: Getting top 3 movies by imdb
+      parameters:
+        - in: query
+          name: _limit
+          type: integer
+          description: To number limit search records
+      responses:
+        200:
+          description: CREATED
+          schema:
+            $ref: "#/definitions/Movie"
+        400:
+          description: BAD REQUEST
+          schema:
+            $ref: "#/definitions/Message"

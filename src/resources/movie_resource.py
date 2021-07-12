@@ -1,7 +1,7 @@
 """
 This is module supports all the REST actions for querying movie data/details.
 """
-from sqlalchemy import func
+from sqlalchemy import func, desc
 from app_config import db
 from models import Movie, Genre
 
@@ -131,3 +131,27 @@ def search_by_director(search_director):
         return movies_list, 200
     else:
         return {"message": "Movies not found by provided directorName."}, 200
+
+
+def get_top_movies_by_popularity(_limit=3):
+    movies_obj_list = db.session.query(Movie).order_by(
+        desc(Movie.popularity_factor)).limit(_limit).all()
+    if movies_obj_list is not None and movies_obj_list != []:
+        movies_list = []
+        for movie_obj in movies_obj_list:
+            movies_list.append(serialize_single(movie_obj))
+        return movies_list, 200
+    else:
+        return {"message": "Movies not found by criteria."}, 200
+
+
+def get_top_movies_by_imdb(_limit=3):
+    movies_obj_list = db.session.query(Movie).order_by(
+        desc(Movie.imdb_score)).limit(_limit).all()
+    if movies_obj_list is not None and movies_obj_list != []:
+        movies_list = []
+        for movie_obj in movies_obj_list:
+            movies_list.append(serialize_single(movie_obj))
+        return movies_list, 200
+    else:
+        return {"message": "Movies not found by criteria."}, 200
