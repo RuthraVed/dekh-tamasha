@@ -1,4 +1,4 @@
-# Welcome To Dekh Tamasha
+# Welcome To Dekh Tamasha - Watch Movies Worth Your Time
 
 ###### tags: `Flask` `RESTful` `SQLAlchemy` `Connexion` `Swagger`
 
@@ -18,6 +18,9 @@ For now, there will be 2 levels of access:
         
 - [X] Search functionality
         -  By movieName or by movieName
+
+- [X] Additional special functionality
+        -  Top Movies By popularity or imdb
 
 ## :wrench: Features To Be Implemented
 
@@ -82,10 +85,15 @@ $ pip3 install -r requirements.txt
 **Note:** Put requirements.txt in the directory where the command will be executed. If it is in another directory, specify the path.
 :::
 
-### Perform Tests
+### :pushpin: Initialize The Database
+This application currently uses SQLiteDB. If needed other databases like MySql or SQLlite or MongoDB may also be used
+```console=1
+$ python3 src/db_initializer.py
+```
 
+### :no_entry: Perform Tests
+###### status: `inactive`
 Run all tests
-
 ```console=1
 $ python3 -m pytest
 ```
@@ -106,4 +114,4 @@ After the app is running, one can access the `Swagger2.0` API documentation at:
 http://localhost:5000/api/ui
 ```
 
-> - Abhishek Dev
+-- Abhishek Dev
