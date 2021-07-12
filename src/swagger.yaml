@@ -15,6 +15,9 @@ produces:
 definitions:
   Movie:
     properties:
+      movieId:
+        type: integer
+        example: 125
       99popularity:
         type: number
         example: 78.0
@@ -73,11 +76,9 @@ paths:
         - View Movies
       summary: Detailed list of all Movies
       description: View all the movies
-      produces:
-        - application/json
       parameters:
-        - name: _limit
-          in: query
+        - in: query
+          name: _limit
           type: integer
           description: To number limit search records
           required: False
@@ -87,9 +88,67 @@ paths:
           schema:
             $ref: "#/definitions/Movie"
         500:
-          description: Internal Server Error.
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/Message"
         504:
-          description: Gateway Timeout.
+          description: Gateway Timeout
+          schema:
+            $ref: "#/definitions/Message"
+
+  /movies/movie-name/{search_name}:
+    get:
+      operationId: resources.movie_resource.search_by_name
+      tags:
+        - Search Movies By Name
+      summary: Search Movies By Name
+      description: Searching movies by name
+      parameters:
+        - in: path
+          name: search_name
+          type: string
+          description: movie name
+          required: True
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Movie"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/Message"
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: "#/definitions/Message"
+
+  /movies/director-name/{search_director}:
+    get:
+      operationId: resources.movie_resource.search_by_director
+      tags:
+        - Search Movies By Director
+      summary: Search Movies By Director
+      description: Searching movies by director
+      parameters:
+        - in: path
+          name: search_director
+          type: string
+          description: movie name
+          required: True
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Movie"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/Message"
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: "#/definitions/Message"
 
   /users:
     get:
@@ -98,11 +157,9 @@ paths:
         - View Users
       summary: Detailed list of all Users
       description: View all the users
-      produces:
-        - application/json
       parameters:
-        - name: _limit
-          in: query
+        - in: query
+          name: _limit
           type: integer
           description: To number limit search records
           required: False
@@ -112,9 +169,13 @@ paths:
           schema:
             $ref: "#/definitions/User"
         500:
-          description: Internal Server Error.
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/Message"
         504:
-          description: Gateway Timeout.
+          description: Gateway Timeout
+          schema:
+            $ref: "#/definitions/Message"
 
   /movie:
     post:
@@ -123,8 +184,6 @@ paths:
         - Add Movie
       summary: Add A Movie
       description: Adding movie details
-      produces:
-        - application/json
       parameters:
         - in: body
           name: movie_json
@@ -148,6 +207,8 @@ paths:
                 type: string
         400:
           description: BAD REQUEST
+          schema:
+            $ref: "#/definitions/Message"
 
   /movie/{movie_id}:
     get:
@@ -156,8 +217,6 @@ paths:
         - Get Movie
       summary: Get A Movie
       description: Getting movie by id
-      produces:
-        - application/json
       parameters:
         - in: path
           name: movie_id

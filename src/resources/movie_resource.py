@@ -22,6 +22,19 @@ def serialize_list(movies_obj_list):
     return movies_list
 
 
+def serialize_single(movie_obj):
+    movie_dict = {}
+    movie_dict["movieId"] = movie_obj.id
+    movie_dict["99popularity"] = movie_obj.popularity_factor
+    movie_dict["director"] = movie_obj.director
+    movie_dict["genre"] = [
+        genre_obj.genre_type for genre_obj in movie_obj.movie_genres
+    ]
+    movie_dict["imdbScore"] = movie_obj.imdb_score
+    movie_dict["name"] = movie_obj.name
+    return movie_dict
+
+
 # JSON To Python Objects & Save to DB
 def db_add(movie_json, movie_obj=None, movie_id=None):
     if movie_obj is not None:
@@ -94,3 +107,27 @@ def delete_by_id(movie_id):
             "message": f"Movie having Id:{movie_id} deleted.",
         }
     return {"message": "Movie not found."}, 404
+
+
+def search_by_name(search_name):
+    movies_obj_list = db.session.query(Movie).filter(
+        Movie.name.like(f'%{search_name}%')).all()
+    if movies_obj_list is not None and movies_obj_list != []:
+        movies_list = []
+        for movie_obj in movies_obj_list:
+            movies_list.append(serialize_single(movie_obj))
+        return movies_list, 200
+    else:
+        return {"message": "Movies not found by provided movieName."}, 200
+
+
+def search_by_director(search_director):
+    movies_obj_list = db.session.query(Movie).filter(
+        Movie.director.like(f'%{search_director}%')).all()
+    if movies_obj_list is not None and movies_obj_list != []:
+        movies_list = []
+        for movie_obj in movies_obj_list:
+            movies_list.append(serialize_single(movie_obj))
+        return movies_list, 200
+    else:
+        return {"message": "Movies not found by provided directorName."}, 200
