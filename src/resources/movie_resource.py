@@ -23,13 +23,20 @@ def serialize_list(movies_obj_list):
 
 
 # JSON To Python Objects & Save to DB
-def db_add(movie_json):
-    movie_obj = Movie(
-        popularity_factor=movie_json.get("99popularity"),
-        director=movie_json.get("director"),
-        imdb_score=movie_json.get("imdbScore"),
-        name=movie_json.get("name")
-    )
+def db_add(movie_json, movie_obj=None, movie_id=None):
+    if movie_obj is not None:
+        movie_obj.popularity_factor = movie_json.get("99popularity")
+        movie_obj.director = movie_json.get("director")
+        movie_obj.imdb_score = movie_json.get("imdbScore")
+        movie_obj.name = movie_json.get("name")
+    else:
+        # Creating a movie obj
+        movie_obj = Movie(
+            popularity_factor=movie_json.get("99popularity"),
+            director=movie_json.get("director"),
+            imdb_score=movie_json.get("imdbScore"),
+            name=movie_json.get("name")
+        )
     # Adding genres in a way to preserve Many to Many relation
     # class Movie:Parent & class Genre:Child
     genre_list = movie_json.get("genre")
@@ -54,4 +61,36 @@ def add_movie(movie_json):
     db_add(movie_json)
     last_id = db.session.query(func.max(Movie.id)).scalar()
     movie_obj = db.session.query(Movie).get(last_id)
-    return serialize_list([movie_obj])[0]  # It will have only one movie
+    temp_dict = serialize_list([movie_obj])[0]
+    movie_name_dict = {}
+    movie_name_dict["movieId"] = last_id
+    movie_name_dict["movieName"] = temp_dict.get("name", None)
+    return movie_name_dict  # It will have only one movie
+
+
+def get_movie_by_id(movie_id):
+    movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
+    if movie is not None:
+        return serialize_list([movie])[0], 200
+    return {"message": "Movie not found."}, 404
+
+
+def edit_by_id(movie_json, movie_id):
+    movie_obj = Movie.query.filter(Movie.id == movie_id).one_or_none()
+    print(movie_obj)
+    if movie_obj is not None:
+        db_add(movie_json, movie_obj, movie_id)
+        return serialize_list([movie_obj])[0], 200
+    return {"message": "Movie not found."}, 404
+
+
+def delete_by_id(movie_id):
+    movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
+
+    if movie is not None:
+        db.session.delete(movie)
+        db.session.commit()
+        return {
+            "message": f"Movie having Id:{movie_id} deleted.",
+        }
+    return {"message": "Movie not found."}, 404

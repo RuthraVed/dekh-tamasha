@@ -7,16 +7,10 @@ host: 192.168.227.243:5000
 basePath: /api
 schemes:
   - http
-  - https
 consumes:
   - application/json
 produces:
   - application/json
-
-securityDefinitions:
-  basic:
-    type: basic
-    x-basicInfoFunc: app.basic_auth
 
 definitions:
   Movie:
@@ -43,7 +37,6 @@ definitions:
       - genre
       - imdbScore
       - name
-
   User:
     properties:
       userId:
@@ -66,6 +59,11 @@ definitions:
       - loginName
       - email
       - accessRole
+  Message:
+    properties:
+      message:
+        type: string
+        example: Some message
 
 paths:
   /movies:
@@ -77,15 +75,22 @@ paths:
       description: View all the movies
       produces:
         - application/json
+      parameters:
+        - name: _limit
+          in: query
+          type: integer
+          description: To number limit search records
+          required: False
       responses:
         200:
           description: OK
+          schema:
+            $ref: "#/definitions/Movie"
         500:
           description: Internal Server Error.
         504:
           description: Gateway Timeout.
-          schema:
-            $ref: "#/definitions/Movie"
+
   /users:
     get:
       operationId: resources.user_resource.get_all
@@ -95,15 +100,22 @@ paths:
       description: View all the users
       produces:
         - application/json
+      parameters:
+        - name: _limit
+          in: query
+          type: integer
+          description: To number limit search records
+          required: False
       responses:
         200:
           description: OK
+          schema:
+            $ref: "#/definitions/User"
         500:
           description: Internal Server Error.
         504:
           description: Gateway Timeout.
-          schema:
-            $ref: "#/definitions/User"
+
   /movie:
     post:
       operationId: resources.movie_resource.add_movie
@@ -111,16 +123,95 @@ paths:
         - Add Movie
       summary: Add A Movie
       description: Adding movie details
+      produces:
+        - application/json
       parameters:
-        - name: movie_json
-          in: body
+        - in: body
+          name: movie_json
+          description: The user to create.
           required: True
           schema:
             $ref: "#/definitions/Movie"
+        - in: query
+          name: _limit
+          type: integer
+          required: False
       responses:
         201:
           description: CREATED
+          schema:
+            type: object
+            properties:
+              movieId:
+                type: integer
+              movieName:
+                type: string
+        400:
+          description: BAD REQUEST
+
+  /movie/{movie_id}:
+    get:
+      operationId: resources.movie_resource.get_movie_by_id
+      tags:
+        - Get Movie
+      summary: Get A Movie
+      description: Getting movie by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: movie_id
+          type: integer
+          required: True
+      responses:
+        200:
+          description: CREATED
+          schema:
+            $ref: "#/definitions/Movie"
         400:
           description: BAD REQUEST
           schema:
+            $ref: "#/definitions/Message"
+
+    put:
+      operationId: resources.movie_resource.edit_by_id
+      tags:
+        - Edit Movie
+      summary: Edit A Movie
+      description: Editting a movie by id
+      parameters:
+        - name: movie_id
+          in: path
+          type: integer
+          required: True
+        - name: movie_json
+          in: body
+          schema:
             $ref: "#/definitions/Movie"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Movie"
+
+    delete:
+      operationId: resources.movie_resource.delete_by_id
+      tags:
+        - Delete Movie
+      summary: Delete A Movie
+      description: Deleting a movie by id
+      parameters:
+        - in: path
+          name: movie_id
+          type: integer
+          description: movieId to delete
+          required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Message"
+        400:
+          description: BAD REQUEST
+          schema:
+            $ref: "#/definitions/Message"
