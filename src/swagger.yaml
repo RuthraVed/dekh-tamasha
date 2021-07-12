@@ -13,6 +13,11 @@ consumes:
 produces:
   - application/json
 
+securityDefinitions:
+  basic:
+    type: basic
+    x-basicInfoFunc: app.basic_auth
+
 definitions:
   Movie:
     properties:
@@ -35,6 +40,7 @@ definitions:
     required:
       - 99popularity
       - director
+      - genre
       - imdbScore
       - name
 
@@ -114,5 +120,7 @@ paths:
       responses:
         201:
           description: CREATED
+        400:
+          description: BAD REQUEST
           schema:
             $ref: "#/definitions/Movie"

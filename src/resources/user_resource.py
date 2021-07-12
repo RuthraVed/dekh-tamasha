@@ -1,9 +1,6 @@
 """
 This is module supports all the REST actions for querying movie data/details.
 """
-
-
-from flask import make_response, abort
 from app_config import db
 from models import User
 

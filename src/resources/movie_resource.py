@@ -1,8 +1,6 @@
 """
 This is module supports all the REST actions for querying movie data/details.
 """
-
-
 from sqlalchemy import func
 from app_config import db
 from models import Movie, Genre
