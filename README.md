@@ -1,6 +1,6 @@
 # Welcome To Dekh Tamasha - Watch Movies Worth Your Time
 
-###### tags: `Flask` `RESTful` `SQLAlchemy` `Connexion` `Swagger`
+###### tags: `Flask` `RESTful` `SQLAlchemy` `Connexion` `Swagger` `Heroku Deployed`
 
 A RESTful API for movies, something similar to IMDB but with potential to be much more.:wink:
 
@@ -114,5 +114,12 @@ After the app is running, one can access the `Swagger2.0` API documentation at:
 ```
 http://localhost:5000/api/ui
 ```
+
+
+## Heroku Deployed
+
+The API is now also deployed on **Heroku**.
+
+https://dekh-tamasha-movie-app.herokuapp.com/
 
 -- Abhishek Dev
