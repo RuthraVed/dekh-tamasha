@@ -3,9 +3,10 @@ info:
   title: Dekh Tamasha - A Movie Rating API
   description: Watch movies that are worth your time
   version: 0.0.1
-host: 192.168.227.243:5000
+host: dekh-tamasha-movie-app.herokuapp.com
 basePath: /api
 schemes:
+  - https
   - http
 consumes:
   - application/json

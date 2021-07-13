@@ -22,12 +22,13 @@ For now, there will be 2 levels of access:
 - [X] Additional special functionality
         -  Top Movies By popularity or imdb
 
+- [x] Deployed on Heroku
+
 ## :wrench: Features To Be Implemented
 
 - [x] Securing the endpoints using JWT
         - This steps ensures the 2 levels of access
 
-- [x] Deploy on Heroku
 
 ## Steps To Use The API
 
