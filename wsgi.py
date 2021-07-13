@@ -1,3 +1,3 @@
-from app import connex_app
+from app import connex_app as application
 if __name__ == "__main__":
-    connex_app.run(debug=False)
+    application.run(debug=False)
