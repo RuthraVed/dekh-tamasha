@@ -22,3 +22,11 @@ def get_all(_limit=None):
     users_obj_list = db.session.query(
         User).order_by(User.id).limit(_limit).all()
     return serialize_list(users_obj_list)
+
+
+def basic_auth(username, password, required_scopes=None):
+    user = User.query.filter(User.login_name == username).one_or_none()
+    if user is not None:
+        if user.password == password:
+            return {'sub': 'admin'}
+    return {"message": "User authentication failed."}, 401

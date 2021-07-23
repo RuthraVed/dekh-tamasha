@@ -2,7 +2,16 @@ swagger: "2.0"
 info:
   title: Dekh Tamasha - A Movie Rating API
   description: Watch movies that are worth your time
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Abhishek Dev
+    url: https://github.com/RuthraVed
+    email: https://www.linkedin.com/in/devabhis/
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
   version: 0.0.1
+
 host: dekh-tamasha-movie-app.herokuapp.com
 basePath: /api
 schemes:
@@ -12,6 +21,11 @@ consumes:
   - application/json
 produces:
   - application/json
+
+securityDefinitions:
+  basic:
+    type: basic
+    x-basicInfoFunc: resources.user_resource.basic_auth
 
 definitions:
   Movie:
@@ -297,6 +311,8 @@ paths:
           description: BAD REQUEST
           schema:
             $ref: "#/definitions/Message"
+      security:
+        - basic: []
 
   /movie/get-top-movies-by-imdb:
     get:
@@ -319,3 +335,5 @@ paths:
           description: BAD REQUEST
           schema:
             $ref: "#/definitions/Message"
+      security:
+        - basic: []
